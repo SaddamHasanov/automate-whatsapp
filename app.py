@@ -30,10 +30,9 @@ def reply():
     if (bool(user) is False) or ('salam' in text):
         users.insert_one({"number": number, "status": "main", "messages": []})
         users.update_one({"number": number}, {"$set": {"status": "main"}})
-        response.message("Salam, dəyərli müştərimiz, *Handex komandası* olaraq\nbütün "
+        return response.message("Salam, dəyərli müştərimiz, *Handex komandası* olaraq\nbütün "
                          "suallarınıza cavab verməyə və sizə dəstək olmağa hazırıq: \n\n"
                          "1️⃣ Kurslar haqqında məlumat\n2️⃣ Bizimlə əlaqə\n3️⃣ FAQ\n4️⃣ Təlimlərimizin sillabusları\n")
-        return flask.Response(str(response), mimetype="application/xml")
     elif user["status"] == "main":
         try:
             option = int(text)
