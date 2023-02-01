@@ -13,7 +13,7 @@ orders = db["orders"]
 app = Flask(__name__)
 
 
-@app.route("/", methods=['get', 'post'])
+@app.route("/", methods=["GET", "POST"])
 def reply():
 
     # fetching
@@ -21,16 +21,18 @@ def reply():
     number = request.form.get('From')
 
     # changing
+    text = str(text).lower()
 
     # reply to messages
     response = MessagingResponse()
     user = users.find_one({"number": number})
     if (bool(user) is False) or ('salam' in text):
+        users.insert_one({"number": number, "status": "main", "messages": []})
+        users.update_one({"number": number}, {"$set": {"status": "main"}})
         response.message("Salam, dəyərli müştərimiz, *Handex komandası* olaraq\nbütün "
                          "suallarınıza cavab verməyə və sizə dəstək olmağa hazırıq: \n\n"
                          "1️⃣ Kurslar haqqında məlumat\n2️⃣ Bizimlə əlaqə\n3️⃣ FAQ\n4️⃣ Təlimlərimizin sillabusları\n")
-        users.insert_one({"number": number, "status": "main", "messages": []})
-        users.update_one({"number": number}, {"$set": {"status": "main"}})
+        return flask.Response(str(response), mimetype="application/xml")
     elif user["status"] == "main":
         try:
             option = int(text)
@@ -46,13 +48,17 @@ def reply():
                              "4️⃣ SQL (1Z0-071)\n"
                              "5️⃣ Data Analitika")
             users.update_one({"number": number}, {"$set": {"status": "kurslar"}})
+            return flask.Response(str(response), mimetype="application/xml")
         elif option == 2:
             response.message("Əlaqə nömrəsi: 050-369-60-88\n"
                              "Email: seddamhasanov213@yandex.com")
+            return flask.Response(str(response), mimetype="application/xml")
         elif option == 3:
             response.message("3 seçildi")
+            return flask.Response(str(response), mimetype="application/xml")
         elif option == 4:
             response.message("4 seçildi")
+            return flask.Response(str(response), mimetype="application/xml")
         else:
             response.message("Məlumat ala bilmək üçün zəhmət olmasa 1, 2, 3, 4\nrəqəmlərindən birini daxil edin")
             return flask.Response(str(response), mimetype="application/xml")
@@ -68,6 +74,7 @@ def reply():
                              "2️⃣ Bizimlə əlaqə\n"
                              "3️⃣ FAQ\n"
                              "4️⃣ Təlimlərimizin sillabusları\n")
+            return flask.Response(str(response), mimetype="application/xml")
         elif 1 <= option <= 5:
             kurslar = ["Excel", "MOSE", "PowerBI (PL-300)", "SQL (1Z0-071)", "Data Analitika"]
             qiymetler = [175, 169, 449, 400, 849]
@@ -94,11 +101,12 @@ def reply():
                              f'Təlimçimiz: {mellimler[option-1]}\n'
                              f'Təlim vaxtları: {vaxt[option-1]}')
             orders.insert_one({"number": number, "item": selected, "address": text, "order_time": datetime.now()})
+            return flask.Response(str(response), mimetype="application/xml")
         else:
             response.message("Məlumat ala bilmək üçün zəhmət olmasa 0, 1, 2, 3, 4, 5\nrəqəmlərindən birini daxil edin")
+            return flask.Response(str(response), mimetype="application/xml")
 
     users.update_one({"number": number}, {"$push": {"messages": {"text": text, "date": datetime.now()}}})
-    return flask.Response(str(response), mimetype="application/xml")
 
 
 if __name__ != "__main__":
