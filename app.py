@@ -5,7 +5,8 @@ from pymongo import MongoClient
 from datetime import datetime
 
 cluster = MongoClient("mongodb+srv://Saddam:Matrixgame213@wpbotdatabase."
-                      "giznbjw.mongodb.net/?retryWrites=true&w=majority")
+                      "giznbjw.mongodb.net/?retryWrites=true&w=majority",
+                      tls=True, tlsAllowInvalidCertificates=True)
 db = cluster["botDB"]
 users = db["users"]
 orders = db["orders"]
