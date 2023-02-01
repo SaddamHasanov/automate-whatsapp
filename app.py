@@ -21,7 +21,6 @@ def reply():
     number = request.form.get('From')
 
     # changing
-    text = str(text).lower()
 
     # reply to messages
     response = MessagingResponse()
