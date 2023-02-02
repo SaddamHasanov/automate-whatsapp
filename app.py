@@ -19,14 +19,12 @@ def reply2():
     text = request.form.get('Body')
     number = request.form.get('From')
     response = MessagingResponse()
-    user = users.find_one({"number": number})
 
     text1 = str(text).lower()
 
-    if (bool(user) is False) or ('salam' in text1):
+    if 'salam' in text1:
         response.message('Salam necəsən?')
         users.insert_one({"number": number, "status": "main", "messages": []})
-        users.update_one({"number": number}, {"$set": {"status": "main"}})
         return flask.Response(str(response), mimetype="application/xml")
     else:
         response.message('nə deyirsən aye')
