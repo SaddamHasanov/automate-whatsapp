@@ -114,4 +114,4 @@ def reply():
 if __name__ != "__main__":
     pass
 else:
-    app.run(port=5000)
+    app.run()
