@@ -22,7 +22,7 @@ def reply2():
 
     text1 = str(text).lower()
 
-    user = users.find_one({"number": number})
+    user = users.find(number)
     if (bool(user) is False) or ('salam' in text1):
         response.message('Salam necəsən?')
         return flask.Response(str(response), mimetype="application/xml")
