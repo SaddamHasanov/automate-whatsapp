@@ -3,9 +3,7 @@ from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
 import pymongo
 
-cluster = pymongo.MongoClient("mongodb+srv://Saddam:Matrixgame213@wpbotdatabase."
-                              "giznbjw.mongodb.net/botDB?retryWrites=true&w=majority",
-                              tls=True, tlsAllowInvalidCertificates=True)
+cluster = pymongo.MongoClient("mongodb+srv://Saddam:Matrixgame213@wpbotdatabase.giznbjw.mongodb.net/botDB?retryWrites=true&w=majority")
 
 db = cluster.botDB
 users = db.users
@@ -25,7 +23,7 @@ def reply2():
 
     if (bool(user) is False) or ('salam' in text1):
         response.message('Salam necəsən?')
-        # users.insert_one({"number": number, "status": "main", "messages": []})
+        users.insert_one({"number": number, "status": "main", "messages": []})
         return flask.Response(str(response), mimetype="application/xml")
     else:
         response.message('nə deyirsən aye')
