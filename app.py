@@ -21,13 +21,13 @@ def reply():
     number = request.form.get('From')
 
     # changing
-    text1 = str(text).lower()
+    text = str(text).lower()
     # number = number.replace("whatsapp:", "")[:-2]
 
     # reply to messages
     response = MessagingResponse()
     user = users.find_one({"number": number})
-    if (bool(user) is False) or ('salam' in text1):
+    if (bool(user) is False) or ('salam' in text):
         users.insert_one({"number": number, "status": "main", "messages": []})
         users.update_one({"number": number}, {"$set": {"status": "main"}})
         response.message("Salam, dəyərli müştərimiz, *Handex komandası* olaraq\nbütün "
