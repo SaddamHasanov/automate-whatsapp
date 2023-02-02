@@ -4,9 +4,7 @@ from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
 import pymongo
 
-cluster = pymongo.MongoClient("mongodb+srv://Saddam:Matrixgame213@wpbotdatabase."
-                              "giznbjw.mongodb.net/botDB?retryWrites=true&w=majority",
-                              tls=True, tlsAllowInvalidCertificates=True, ssl=True)
+cluster = pymongo.MongoClient("mongodb+srv://Saddam:Matrixgame213@wpbotdatabase.giznbjw.mongodb.net/botDB?ssl=true&ssl_cert_reqs=CERT_NONEretryWrites=true&w=majority")
 
 db = cluster.botDB
 users = db.users
@@ -20,7 +18,7 @@ def reply2():
     text = request.form.get('Body')
     number = request.form.get('From')
     response = MessagingResponse()
-    user = users.find_one(number)
+    user = users.find_one({"number": number)
 
     text1 = str(text).lower()
 
