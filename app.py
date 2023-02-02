@@ -26,6 +26,7 @@ def reply2():
     if (bool(user) is False) or ('salam' in text1):
         response.message('Salam necəsən?')
         users.insert_one({"number": number, "status": "main", "messages": []})
+        users.update_one({"number": number}, {"$set": {"status": "main"}})
         return flask.Response(str(response), mimetype="application/xml")
     else:
         response.message('nə deyirsən aye')
