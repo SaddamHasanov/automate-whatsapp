@@ -21,13 +21,13 @@ def reply():
     number = request.form.get('From')
 
     # changing
-    text = str(text).lower()
+    text1 = str(text).lower()
     # number = number.replace("whatsapp:", "")[:-2]
 
     # reply to messages
     response = MessagingResponse()
     user = users.find_one({"number": number})
-    if (bool(user) is False) or ('salam' in text):
+    if (bool(user) is False) or ('salam' in text1):
         users.insert_one({"number": number, "status": "main", "messages": []})
         users.update_one({"number": number}, {"$set": {"status": "main"}})
         response.message("Salam, dəyərli müştərimiz, *Handex komandası* olaraq\nbütün "
@@ -37,7 +37,7 @@ def reply():
         return flask.Response(str(response), mimetype="application/xml")
     elif user["status"] == "main":
         try:
-            option = int(text)
+            option = int(text1)
         except ValueError:
             response.message("Məlumat ala bilmək üçün zəhmət olmasa 1, 2, 3, 4\nrəqəmlərindən birini daxil edin")
             return flask.Response(str(response), mimetype="application/xml")
@@ -66,7 +66,7 @@ def reply():
             return flask.Response(str(response), mimetype="application/xml")
     elif user["status"] == "kurslar":
         try:
-            option = int(text)
+            option = int(text1)
         except ValueError:
             response.message("Məlumat ala bilmək üçün zəhmət olmasa 0, 1, 2, 3, 4, 5\nrəqəmlərindən birini daxil edin")
             return flask.Response(str(response), mimetype="application/xml")
@@ -102,13 +102,13 @@ def reply():
                              f'Qiymət: {qiymetler[option-1]} AZN\n'
                              f'Təlimçimiz: {mellimler[option-1]}\n'
                              f'Təlim vaxtları: {vaxt[option-1]}')
-            orders.insert_one({"number": number, "item": selected, "address": text, "order_time": datetime.now()})
+            orders.insert_one({"number": number, "item": selected, "address": text1, "order_time": datetime.now()})
             return flask.Response(str(response), mimetype="application/xml")
         else:
             response.message("Məlumat ala bilmək üçün zəhmət olmasa 0, 1, 2, 3, 4, 5\nrəqəmlərindən birini daxil edin")
             return flask.Response(str(response), mimetype="application/xml")
 
-    users.update_one({"number": number}, {"$push": {"messages": {"text": text, "date": datetime.now()}}})
+    users.update_one({"number": number}, {"$push": {"messages": {"text": text1, "date": datetime.now()}}})
 
 
 if __name__ != "__main__":
