@@ -1,6 +1,15 @@
 import flask
 from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
+from pymongo import MongoClient
+
+cluster = MongoClient("mongodb+srv://Saddam:Matrixgame213@wpbotdatabase."
+                      "giznbjw.mongodb.net/?retryWrites=true&w=majority",
+                      tls=True, tlsAllowInvalidCertificates=True)
+
+db = cluster["botDB"]
+users = db["users"]
+orders = db["orders"]
 
 app = Flask(__name__)
 
@@ -23,4 +32,4 @@ def reply2():
 if __name__ != "__main__":
     pass
 else:
-    app.run()
+    app.run(port=5000)
