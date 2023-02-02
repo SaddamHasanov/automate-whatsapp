@@ -1,3 +1,4 @@
+import ssl
 import flask
 from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
@@ -5,7 +6,7 @@ import pymongo
 
 cluster = pymongo.MongoClient("mongodb+srv://Saddam:Matrixgame213@wpbotdatabase."
                               "giznbjw.mongodb.net/botDB?retryWrites=true&w=majority",
-                              tls=True, tlsAllowInvalidCertificates=True)
+                              tls=True, tlsAllowInvalidCertificates=True, ssl=True)
 
 db = cluster.botDB
 users = db.users
