@@ -3,12 +3,30 @@ from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
 from pymongo import MongoClient
 from datetime import datetime
+from logging.config import dictConfig
 
-cluster = MongoClient("mongodb+srv://Saddam:<password>@wpbotdatabase.giznbjw.mongodb.net/?retryWrites=true&w=majority", tls=True, tlsAllowInvalidCertificates=True)
-                      
+cluster = MongoClient("mongodb+srv://Saddam:Matrixgame213@wpbotdatabase."
+                      "giznbjw.mongodb.net/?retryWrites=true&w=majority",
+                      tls=True, tlsAllowInvalidCertificates=True)
 db = cluster["botDB"]
 users = db["users"]
 orders = db["orders"]
+
+dictConfig({
+    'version': 1,
+    'formatters': {'default': {
+        'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
+    }},
+    'handlers': {'wsgi': {
+        'class': 'logging.StreamHandler',
+        'stream': 'ext://flask.logging.wsgi_errors_stream',
+        'formatter': 'default'
+    }},
+    'root': {
+        'level': 'INFO',
+        'handlers': ['wsgi']
+    }
+})
 
 app = Flask(__name__)
 
