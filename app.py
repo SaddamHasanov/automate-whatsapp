@@ -17,11 +17,13 @@ app = Flask(__name__)
 @app.route("/", methods=["GET", "POST"])
 def reply2():
     text = request.form.get('Body')
+    number = request.form.get('From')
     response = MessagingResponse()
 
     text1 = str(text).lower()
 
-    if 'salam' in text1:
+    user = users.find_one({"number": number})
+    if (bool(user) is False) or ('salam' in text1):
         response.message('Salam necəsən?')
         return flask.Response(str(response), mimetype="application/xml")
     else:
@@ -32,4 +34,4 @@ def reply2():
 if __name__ != "__main__":
     pass
 else:
-    app.run(port=5000)
+    app.run()
