@@ -61,6 +61,8 @@ def reply():
         elif option == 4:
             response.message("4 seçildi")
             return flask.Response(str(response), mimetype="application/xml")
+        elif option == 5:
+            return
         else:
             response.message("Məlumat ala bilmək üçün zəhmət olmasa 1, 2, 3, 4\nrəqəmlərindən birini daxil edin")
             return flask.Response(str(response), mimetype="application/xml")
